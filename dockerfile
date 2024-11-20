@@ -11,4 +11,4 @@ COPY . .
 RUN javac hello.java
 
 # Run the Java program
-CMD ["java", "HelloWorld"]
+CMD ["java", "hello"]
