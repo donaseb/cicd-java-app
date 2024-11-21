@@ -1,20 +1,55 @@
 pipeline {
     agent {
-        docker {
-            image 'openjdk:11-jre-slim'
-            args '-u root :root'
-        }
-   environment {
-        DOCKER_IMAGE = 'donaseb/hello-world-java-app'
-        DOCKER_CREDENTIALS = 'dockerhub-credentials-cicd'
-        }
-  stages {
+        docker { image 'openjdk:11-jre-slim' } // Use Docker with OpenJDK image
+    }
+    environment {
+        DOCKER_IMAGE = 'donaseb/helloworld-java'  // Replace with your DockerHub username/image name
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-cicd') // DockerHub credentials stored in Jenkins
+    }
+    stages {
         stage('Checkout') {
             steps {
+                echo 'Cloning repository...'
+                git branch: 'main', url: 'https://github.com/donaseb/cic-java-app.git'  // Replace with your repository URL
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Building Java application...'
+                sh 'javac hello.java'  // Compile the Java program
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'echo "Running tests..."'  // Add actual test commands if applicable (e.g., JUnit tests)
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
                 script {
-                    // Pull the latest code from GitHub
-                    git 'https://github.com/donaseb/cicd-java-app.git'
+                    def appVersion = "1.0"  // Set a version for the app
+                    sh "docker build -t $DOCKER_IMAGE:${appVersion} ."
+                    sh "docker tag $DOCKER_IMAGE:${appVersion} $DOCKER_IMAGE:latest"
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                echo 'Pushing Docker image to DockerHub...'
+                script {
+                    sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                    sh "docker push $DOCKER_IMAGE:${appVersion}"
+                    sh "docker push $DOCKER_IMAGE:latest"
                 }
             }
         }
     }
+    post {
+        always {
+            echo 'Cleaning up workspace...'
+            cleanWs()  // Clean up workspace after the job finishes
+        }
+    }
+}
