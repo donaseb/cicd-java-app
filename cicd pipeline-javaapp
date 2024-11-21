@@ -1,0 +1,20 @@
+pipeline {
+    agent {
+        docker {
+            image 'openjdk:11-jre-slim'
+            args '-u root :root'
+        }
+   environment {
+        DOCKER_IMAGE = 'donaseb/hello-world-java-app'
+        DOCKER_CREDENTIALS = 'dockerhub-credentials-cicd'
+        }
+  stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Pull the latest code from GitHub
+                    git 'https://github.com/donaseb/cicd-java-app.git'
+                }
+            }
+        }
+    }
