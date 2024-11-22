@@ -4,13 +4,13 @@ pipeline {
     }
     environment {
         DOCKER_IMAGE = 'donaseb/helloworld-java'  // Replace with your DockerHub username/image name
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-cicd') // DockerHub credentials stored in Jenkins
+        DOCKERHUB_CREDENTIALS = credentials('docker-credentials') // DockerHub credentials stored in Jenkins
     }
     stages {
         stage('Checkout') {
             steps {
                 echo 'Cloning repository...'
-                git branch: 'main', url: 'https://github.com/donaseb/cic-java-app.git'  // Replace with your repository URL
+                git branch: 'main', url: 'https://github.com/donaseb/cicd-java-app.git'  // Replace with your repository URL
             }
         }
         stage('Build') {
