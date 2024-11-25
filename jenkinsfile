@@ -9,6 +9,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'donaseb/helloworld-java'  // Replace with your DockerHub username/image name
         DOCKERHUB_CREDENTIALS = credentials('docker-credentials') // DockerHub credentials stored in Jenkins
+        appVersion = '1.0'
     }
     stages {
       stage('Setup Docker CLI') {
