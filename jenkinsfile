@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'openjdk:11-jdk-slim' // Use Docker with OpenJDK image'
-            args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // Correct placement of args
+            image 'openjdk:11-jdk-slim'
+            args '-u root -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker:/var/lib/docker'
         }
     }
 
