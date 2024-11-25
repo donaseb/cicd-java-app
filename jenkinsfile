@@ -11,6 +11,16 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('docker-credentials') // DockerHub credentials stored in Jenkins
     }
     stages {
+      stage('Setup Docker CLI') {
+    steps {
+        echo 'Installing Docker CLI...'
+        sh '''
+        apt-get update
+        apt-get install -y docker.io
+        '''
+    }
+}
+
         stage('Checkout') {
             steps {
                 echo 'Cloning repository...'
