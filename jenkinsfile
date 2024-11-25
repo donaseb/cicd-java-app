@@ -17,12 +17,14 @@ pipeline {
             steps {
                 echo 'Building Java application...'
                 sh 'javac hello.java'  // Compile the Java program
+                 echo "build succesful"
             }
         }
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'echo "Running tests..."'  // Add actual test commands if applicable (e.g., JUnit tests)
+                sh 'echo "Running tests..."' // Add actual test commands if applicable (e.g., JUnit tests)
+                echo "tests successful"
             }
         }
         stage('Build Docker Image') {
