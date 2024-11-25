@@ -1,8 +1,11 @@
 pipeline {
     agent {
-        docker { image 'openjdk:11-jre-slim' } // Use Docker with OpenJDK image
-        args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-    }
+    docker { 
+        image 'openjdk:11-jre-slim' 
+    } 
+    args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+}
+
     environment {
         DOCKER_IMAGE = 'donaseb/helloworld-java'  // Replace with your DockerHub username/image name
         DOCKERHUB_CREDENTIALS = credentials('docker-credentials') // DockerHub credentials stored in Jenkins
